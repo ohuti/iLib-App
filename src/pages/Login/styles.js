@@ -4,8 +4,9 @@ import Constants from 'expo-constants'
 export default StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Constants.statusBarHeight + 90,
-    paddingHorizontal: 24
+    paddingTop: Constants.statusBarHeight + 50,
+    paddingHorizontal: 24,
+    backgroundColor: '#FFF'
   },
 
   logo: {
@@ -24,7 +25,8 @@ export default StyleSheet.create({
     height: 40,
     borderBottomColor: '#FD5F00',
     borderBottomWidth: 1,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: '#044C8C'
   },
 
   password: {
@@ -35,6 +37,7 @@ export default StyleSheet.create({
     paddingLeft: '17%',
     paddingRight: '5%',
     alignItems: 'center',
+    color: '#044C8C',
     borderBottomColor: '#FD5F00',
     borderBottomWidth: 1,
     marginTop: 30,
@@ -52,10 +55,9 @@ export default StyleSheet.create({
     borderWidth: 2,
     borderColor: '#FD5F00',
     borderRadius: 8,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 5
+    marginBottom: 25
   },
 
   loginText: {
@@ -64,8 +66,12 @@ export default StyleSheet.create({
   },
 
   link: {
+    width: '45%'
+  },
+
+  linkText: {
     marginTop: 5,
     color: '#044C8C',
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   }
 })

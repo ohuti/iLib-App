@@ -1,80 +1,91 @@
-import React, { useState } from 'react'
-import { Text, View, Image, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard,  } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-import { Feather } from '@expo/vector-icons'
+import React, { Component } from 'react'
+import { Text, View, Image, TextInput, TouchableOpacity, Keyboard, StatusBar, TouchableWithoutFeedback } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from './styles'
 
 import logo from '../../assets/logo.png'
+import { Feather } from '@expo/vector-icons'
 
-const Login = () => {
-  const navigation = useNavigation()
+export default class Login extends Component {
+  constructor() {
+    super()
 
-  const [ email, setEmail ] = useState('')
-  const [ password, setPassword ] = useState('')
-
-  const [ securePassword, setSecurePassword ] = useState(true)
-  const [ eyeIcon, setEyeIcon ] = useState('eye-off')
-  
-  const showPassword = () => {
-    securePassword ? setSecurePassword(false) : setSecurePassword(true)
-    securePassword ? setEyeIcon('eye') : setEyeIcon('eye-off') 
+    this.state = {      
+      email: '',
+      password: '',
+      
+      securePassword: true,
+      eyeIcon: 'eye-off'
+    }
   }
-  
-  const submit = () => {
+
+  showPassword = () => {
+    this.setState({ securePassword: !this.state.securePassword })
+    this.state.securePassword ? this.setState({ eyeIcon: 'eye' }) : this.setState({ eyeIcon: 'eye-off' })
     Keyboard.dismiss()
-    console.log(email)
-    console.log(password)
-    
-    setEmail('')
-    setPassword('')
-
-    navigation.navigate('Home')
   }
 
-  return (
-    <KeyboardAvoidingView behavior='position' style={styles.container}>
-      <Image style={styles.logo} source={logo} />
+  submit = () => {
+    Keyboard.dismiss()
+    console.log(this.state.email)
+    console.log(this.state.password)
 
-      <Text style={styles.description}>Faça empréstimos de livros e reserve salas de maneira descomplicada</Text>
+    this.state.email = ''
+    this.state.password = ''
 
-      <TextInput
-        style={styles.email}
-        autoCapitalize='none'
-        placeholder='E-mail'
-        keyboardType='email-address'
-        onChangeText={text => setEmail(text)}
-        value={email}
-      />
+    this.props.navigation.navigate('Home')
+  }
 
-      <View style={styles.password}>
-        <TextInput
-          style={styles.passwordTextInput}
-          autoCapitalize='none'
-          placeholder='Senha'
-          secureTextEntry={securePassword}
-          onChangeText={text => setPassword(text)}
-          value={password}
-          onSubmitEditing={submit}
-        />
-        <TouchableOpacity onPress={showPassword}>
-          <Feather name={eyeIcon} size={24} color='#044C8C' />
-        </TouchableOpacity>
-      </View>
+  render() {
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAwareScrollView style={styles.container}>
+          <StatusBar backgroundColor='#FFF' barStyle='dark-content' />
+          <Image style={styles.logo} source={logo} />
 
-      <TouchableOpacity style={styles.login} onPress={submit}>
-        <Text style={styles.loginText}>Acessar</Text>
-      </TouchableOpacity>
+          <Text style={styles.description}>Faça empréstimos de livros e reserve salas de maneira descomplicada</Text>
 
-      <TouchableOpacity>
-        <Text style={styles.link}>esqueci minha senha</Text>
-      </TouchableOpacity>
+          <TextInput
+            style={styles.email}
+            autoCapitalize='none'
+            placeholder='E-mail'
+            keyboardType='email-address'
+            onChangeText={text => this.setState({ email: text })}
+            value={this.state.email}
+            returnKeyType='go'
+            onSubmitEditing={() => this.passwordInput.focus()}
+          />
 
-      <TouchableOpacity>
-        <Text style={styles.link}>não sou cadastrado</Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
-  )
+          <View style={styles.password}>
+            <TextInput
+              ref = { ref => this.passwordInput = ref }
+              style={styles.passwordTextInput}
+              autoCapitalize='none'
+              placeholder='Senha'
+              secureTextEntry={this.state.securePassword}
+              onChangeText={text => this.setState({ password: text })}
+              value={this.state.password}
+              onSubmitEditing={this.submit}
+            />
+            <TouchableOpacity onPress={this.showPassword}>
+              <Feather name={this.state.eyeIcon} size={24} color='#044C8C' />
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity style={styles.login} onPress={this.submit}>
+            <Text style={styles.loginText}>Acessar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={ styles.link }>
+            <Text style={styles.linkText}>esqueci minha senha</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={ styles.link } onPress={() => this.props.navigation.navigate('Register')}>
+            <Text style={styles.linkText}>não sou cadastrado</Text>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
+      </TouchableWithoutFeedback>
+    )
+  }
 }
-
-export default Login
