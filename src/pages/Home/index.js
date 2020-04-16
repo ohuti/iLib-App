@@ -17,7 +17,7 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Olá, {name}</Text>
+      {/* <Text>Olá, {name}</Text> */}
 
       <TouchableOpacity style={styles.logout}>
         <MaterialCommunityIcons name='power' size={50} color='#044C8C' />
