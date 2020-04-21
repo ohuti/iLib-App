@@ -2,14 +2,15 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
 
 import styles from "./styles";
 
 import logo from "../../assets/logo.png";
 
-const Home = () => {
-  const navigation = useNavigation();
-  const name = "Temp";
+const Home = ({ navigation }) => {
+
+  const dispatch = useDispatch();
 
   const navigateToBookList = () => {
     navigation.navigate("BookList");
@@ -18,12 +19,20 @@ const Home = () => {
   const navigateToRoomList = () => {
     navigation.navigate("RoomList");
   };
+  
+  const logout = () => {
+    dispatch({
+      type:"SIGNOUT"
+    })
+
+    navigation.navigate("Login");
+  };
 
   return (
     <View style={styles.container}>
       {/* <Text>Olá, {name}</Text> */}
 
-      <TouchableOpacity style={styles.logout}>
+      <TouchableOpacity style={styles.logout} onPress={logout}>
         <MaterialCommunityIcons name="power" size={50} color="#044C8C" />
       </TouchableOpacity>
 

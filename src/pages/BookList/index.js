@@ -9,7 +9,7 @@ import {
   TextInput,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+//import { useNavigation } from "@react-navigation/native";
 
 import styles from "./styles";
 
@@ -19,8 +19,8 @@ function wait(timeout) {
   });
 }
 
-const BookList = () => {
-  const navigation = useNavigation();
+const BookList = ({ navigation }) => {
+  //const navigation = useNavigation();
 
   const [refreshing, setRefreshing] = React.useState(false);
   const [search, setSearch] = React.useState("");

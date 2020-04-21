@@ -1,4 +1,7 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+
 import {
   Text,
   View,
@@ -17,114 +20,118 @@ import api from "../../services/api";
 import logo from "../../assets/logo.png";
 import { Feather } from "@expo/vector-icons";
 
-export default class Login extends Component {
-  constructor() {
-    super();
+export default function Login({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [securePassword, setSecurePassword] = useState(true);
+  const [eyeIcon, setEyeIcon] = useState("eye-off");
+  const [falhaAut, setFalhaAut] = useState(false);
+  const dispatch = useDispatch();
 
-    this.state = {
-      email: "",
-      password: "",
-      falhaAut: false,
-      securePassword: true,
-      eyeIcon: "eye-off",
-    };
-  }
+  let isLogged = useSelector((state) => state.login.logged);
 
-  verificaErro = () => {
-    if (this.state.falhaAut === true) {
+  useEffect(() => {
+    if (isLogged) {
+      navigation.navigate("Home");
+    }
+  }, [isLogged]);
+
+  const verificaErro = () => {
+    if (falhaAut === true) {
       return "Usuário e/ou senha incorreto";
     }
   };
 
-  showPassword = () => {
-    this.setState({ securePassword: !this.state.securePassword });
-    this.state.securePassword
-      ? this.setState({ eyeIcon: "eye" })
-      : this.setState({ eyeIcon: "eye-off" });
+  const showPassword = () => {
+    setSecurePassword(!securePassword);
+    securePassword ? setEyeIcon("eye") : setEyeIcon("eye-off");
     Keyboard.dismiss();
   };
 
-  submit = async () => {
+  const submit = async () => {
     Keyboard.dismiss();
 
     let logged = false;
     const data = await api
       .post("/sessao", {
-        email: this.state.email,
-        senha: this.state.password,
+        email,
+        senha: password,
       })
       .then(function (response) {
-        logged = true;
+        dispatch({
+          type: "LOGGED",
+          id: response.data.usuario.id,
+          nome: response.data.usuario.nome,
+          tipo: response.data.usuario.tipo,
+          email: response.data.usuario.email,
+          token: response.data.token,
+        });
       })
       .catch(function (err) {
         console.log(err);
       });
-    console.log(logged);
 
-    if (logged === true) {
-      this.setState({ falhaAut: false });
-      this.props.navigation.navigate("Home");
+    if (isLogged === true) {
+      //setFalhaAut(false);
     } else {
-      this.setState({ falhaAut: true });
+      setFalhaAut(true);
     }
   };
 
-  render() {
-    return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <KeyboardAwareScrollView style={styles.container}>
-          <StatusBar backgroundColor="#FFF" barStyle="dark-content" />
-          <Image style={styles.logo} source={logo} />
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAwareScrollView style={styles.container}>
+        <StatusBar backgroundColor="#FFF" barStyle="dark-content" />
+        <Image style={styles.logo} source={logo} />
 
-          <Text style={styles.description}>
-            Faça empréstimos de livros e reserve salas de maneira descomplicada
-          </Text>
-          <Text style={styles.mensagemErro}>{this.verificaErro()}</Text>
+        <Text style={styles.description}>
+          Faça empréstimos de livros e reserve salas de maneira descomplicada
+        </Text>
+        <Text style={styles.mensagemErro}>{verificaErro()}</Text>
+        <TextInput
+          style={styles.email}
+          autoCapitalize="none"
+          placeholder="E-mail"
+          keyboardType="email-address"
+          onFocus={() => setFalhaAut(false)}
+          onChangeText={(text) => setEmail(text)}
+          value={email}
+          returnKeyType="go"
+          //onSubmitEditing={() => this.passwordInput.focus()}
+        />
+
+        <View style={styles.password}>
           <TextInput
-            style={styles.email}
+            //ref={(ref) => (this.passwordInput = ref)}
+            style={styles.passwordTextInput}
             autoCapitalize="none"
-            placeholder="E-mail"
-            keyboardType="email-address"
-            onFocus={() => this.setState({ falhaAut: false })}
-            onChangeText={(text) => this.setState({ email: text })}
-            value={this.state.email}
-            returnKeyType="go"
-            onSubmitEditing={() => this.passwordInput.focus()}
+            placeholder="Senha"
+            onFocus={() => setFalhaAut(false)}
+            secureTextEntry={securePassword}
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+            onSubmitEditing={submit}
           />
-
-          <View style={styles.password}>
-            <TextInput
-              ref={(ref) => (this.passwordInput = ref)}
-              style={styles.passwordTextInput}
-              autoCapitalize="none"
-              placeholder="Senha"
-              onFocus={() => this.setState({ falhaAut: false })}
-              secureTextEntry={this.state.securePassword}
-              onChangeText={(text) => this.setState({ password: text })}
-              value={this.state.password}
-              onSubmitEditing={this.submit}
-            />
-            <TouchableOpacity onPress={this.showPassword}>
-              <Feather name={this.state.eyeIcon} size={24} color="#044C8C" />
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity style={styles.login} onPress={this.submit}>
-            <Text style={styles.loginText}>Acessar</Text>
+          <TouchableOpacity onPress={showPassword}>
+            <Feather name={eyeIcon} size={24} color="#044C8C" />
           </TouchableOpacity>
+        </View>
 
-          <TouchableOpacity style={styles.link}>
-            <Text style={styles.linkText}>esqueci minha senha</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.login} onPress={submit}>
+          <Text style={styles.loginText}>Acessar</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.link}
-            onPress={() => this.props.navigation.navigate("Register")}
-          >
-            <Text style={styles.linkText}>não sou cadastrado</Text>
-          </TouchableOpacity>
-        </KeyboardAwareScrollView>
-      </TouchableWithoutFeedback>
-    );
-  }
+        <TouchableOpacity style={styles.link}>
+          <Text style={styles.linkText}>esqueci minha senha</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.link}
+          onPress={() => navigation.navigate("Register")}
+        >
+          <Text style={styles.linkText}>não sou cadastrado</Text>
+        </TouchableOpacity>
+      </KeyboardAwareScrollView>
+    </TouchableWithoutFeedback>
+  );
 }
