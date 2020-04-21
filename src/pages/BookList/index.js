@@ -45,7 +45,7 @@ const BookList = () => {
       nome_livro: "SECRETS MILLIONAIRE MIND",
       editora: "HarperCollins e-books",
       idioma: "Inglês",
-      quantidade: 3,
+      quantidade: 100,
     },
     {
       isbn: "978-8522112593",
@@ -102,9 +102,22 @@ const BookList = () => {
     if (dataArray !== 0) {
       return (
         <>
-          <Text style={styles.textoDestaque}>Quantidade:</Text>
-          <View style={styles.boxDisponibilidade}>
-            <Text style={styles.mensagemDisponivel}>{dataArray}</Text>
+          <View>
+            <Text>
+              <Text style={styles.textoDestaque}>Quantidade:</Text>
+              <Text>{dataArray}</Text>
+            </Text>
+          </View>
+
+          <View style={styles.items}>
+            <TouchableOpacity onPress={navigateToHome}>
+              <Text style={styles.textoBotao}>Emprestimo</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.items}>
+            <TouchableOpacity onPress={navigateToHome}>
+              <Text style={styles.textoBotao}>Reserva</Text>
+            </TouchableOpacity>
           </View>
         </>
       );
@@ -160,10 +173,7 @@ const BookList = () => {
           <>
             <View style={styles.bookContainer}>
               <View style={styles.boxCabecalhoMensagem}>
-                <Text>
-                  <Text style={styles.textoDestaque}>Nome do Livro: </Text>
-                  {dataArray.nome_livro}
-                </Text>
+                <Text style={styles.textoNome}>{dataArray.nome_livro}</Text>
               </View>
               <Text>
                 <Text style={styles.textoDestaque}>Editora:</Text>{" "}

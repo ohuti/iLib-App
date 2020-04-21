@@ -16,18 +16,20 @@ export default StyleSheet.create({
   },
   boxCabecalhoMensagem: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "baseline",
   },
   mensagemDisponivel: {
     textAlign: "center",
+    textAlignVertical: "center",
     color: "white",
     borderStyle: "solid",
     borderWidth: 1,
     borderColor: "gray",
-    borderRadius: 8,
     padding: 5,
     backgroundColor: "green",
+    width: 40,
+    height: 40,
+    borderRadius: 50,
   },
   mensagemIndisponivel: {
     textAlign: "center",
@@ -40,14 +42,17 @@ export default StyleSheet.create({
     backgroundColor: "gray",
   },
   boxDisponibilidade: {
-    width: "35%",
     borderStyle: "solid",
     borderColor: "lightgreen",
-    borderRadius: 12,
+    marginLeft: 10,
   },
   textoDestaque: {
     fontSize: 15,
     fontWeight: "bold",
+    color: "#044C8C",
+  },
+  textoNome: {
+    fontSize: 18,
     color: "#044C8C",
   },
   searchContainer: {
@@ -69,5 +74,27 @@ export default StyleSheet.create({
   searchContainerItem: {
     alignItems: "center",
     alignSelf: "center",
+  },
+  containerQuantidade: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  items: {
+    marginTop: 5,
+    width: "100%",
+    height: 45,
+    borderRadius: 8,
+    borderColor: "#FD5F00",
+    borderWidth: 2,
+    paddingLeft: 20,
+    marginBottom: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  textoBotao: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#044C8C",
   },
 });
