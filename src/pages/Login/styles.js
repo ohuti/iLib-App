@@ -9,6 +9,11 @@ export default StyleSheet.create({
     backgroundColor: '#FFF'
   },
 
+  mensagemErro:{
+    textAlign:'center',
+    color:'red',
+  },
+
   logo: {
     alignSelf: 'center'
   },

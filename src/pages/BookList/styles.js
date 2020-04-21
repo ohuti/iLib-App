@@ -10,7 +10,13 @@ export default StyleSheet.create({
   bookContainer: {
     borderWidth: 1,
     borderColor: "#FD5F00",
-    padding: 25,
+    paddingLeft: 25,
+    paddingRight: 25,
+    paddingTop: 15,
+    paddingBottom: 15,
+
+
+
     margin: 6,
     borderRadius: 8,
   },
@@ -75,11 +81,6 @@ export default StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
   },
-  containerQuantidade: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-  },
   items: {
     marginTop: 5,
     width: "100%",
@@ -88,7 +89,6 @@ export default StyleSheet.create({
     borderColor: "#FD5F00",
     borderWidth: 2,
     paddingLeft: 20,
-    marginBottom: 10,
     alignItems: "center",
     justifyContent: "center",
   },

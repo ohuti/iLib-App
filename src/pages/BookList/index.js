@@ -98,7 +98,7 @@ const BookList = () => {
     },
   ];
 
-  function verificaQuantidade(dataArray) {
+  function verificaAcao(dataArray) {
     if (dataArray !== 0) {
       return (
         <>
@@ -120,6 +120,14 @@ const BookList = () => {
             </TouchableOpacity>
           </View>
         </>
+      );
+    } else {
+      return (
+        <View style={styles.items}>
+          <TouchableOpacity onPress={navigateToHome}>
+            <Text style={styles.textoBotao}>Reserva</Text>
+          </TouchableOpacity>
+        </View>
       );
     }
   }
@@ -186,7 +194,7 @@ const BookList = () => {
               <Text>
                 <Text style={styles.textoDestaque}>isbn:</Text> {dataArray.isbn}
               </Text>
-              {verificaQuantidade(dataArray.quantidade)}
+              {verificaAcao(dataArray.quantidade)}
             </View>
           </>
         )}
