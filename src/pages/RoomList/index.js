@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import api from "../../services/api";
+
 import {
   View,
   Text,
@@ -19,12 +22,33 @@ function wait(timeout) {
   });
 }
 
-const RoomList = ({navigation}) => {
+const RoomList = ({ navigation }) => {
   // navigation = useNavigation();
 
   const [refreshing, setRefreshing] = React.useState(false);
   const [search, setSearch] = React.useState("");
+  const [dataArray, setDataArray] = React.useState([]);
+  const token = useSelector((state) => state.login.token);
 
+  useEffect(() => {
+    async function loadISBN() {
+      const data = await api
+        .get("/salas", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(function (response) {
+          setDataArray(response.data);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    }
+
+    loadISBN();
+  }, []);
+  /*
   const salaObj1 = {
     id_sala: "1001",
     numero: "25",
@@ -88,11 +112,13 @@ const RoomList = ({navigation}) => {
     salaObj7,
   ];
 
+  */
   function verificaDisponibilidade(dataArray) {
-    if (dataArray === "disponivel") {
-      return styles.mensagemDisponivel;
+    console.log(dataArray);
+    if (dataArray === "1") {
+      return <Text style={styles.mensagemDisponivel}>{`Disponível`}</Text>;
     } else {
-      return styles.mensagemIndisponivel;
+      return <Text style={styles.mensagemIndisponivel}>{`Indisponível`}</Text>;
     }
   }
 
@@ -108,6 +134,7 @@ const RoomList = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <Ionicons name="md-qr-scanner" size={50} color="#044C8C" />
       <TouchableOpacity onPress={navigateToHome}>
         <Feather name="chevron-left" size={50} color="#044C8C" />
       </TouchableOpacity>
@@ -147,14 +174,10 @@ const RoomList = ({navigation}) => {
               <View style={styles.boxCabecalhoMensagem}>
                 <Text>
                   <Text style={styles.textoDestaque}>Código da Sala: </Text>
-                  {dataArray.id_sala}
+                  {dataArray.id}
                 </Text>
                 <View style={styles.boxDisponibilidade}>
-                  <Text
-                    style={verificaDisponibilidade(dataArray.disponibilidade)}
-                  >
-                    {dataArray.disponibilidade}
-                  </Text>
+                  {verificaDisponibilidade(dataArray.estado)}
                 </View>
               </View>
               <Text>

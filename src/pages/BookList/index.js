@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   View,
   Text,
@@ -8,10 +10,11 @@ import {
   FlatList,
   TextInput,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 //import { useNavigation } from "@react-navigation/native";
 
 import styles from "./styles";
+import api from "../../services/api";
 
 function wait(timeout) {
   return new Promise((resolve) => {
@@ -21,82 +24,29 @@ function wait(timeout) {
 
 const BookList = ({ navigation }) => {
   //const navigation = useNavigation();
-
+  const token = useSelector((state) => state.login.token);
   const [refreshing, setRefreshing] = React.useState(false);
   const [search, setSearch] = React.useState("");
+  const [dataArray, setDataArray] = React.useState([]);
 
-  const dataArray = [
-    {
-      isbn: "978-8521207450",
-      nome_livro: "Curso de Física Básica - Volume 1",
-      editora: "Edgard Blucher; Ciencias Exatas edition (1969)",
-      idioma: "Português",
-      quantidade: 12,
-    },
-    {
-      isbn: "978-8580556193",
-      nome_livro: "Mecânica Vetorial para Engenheiros: Estática",
-      editora: "AMGH (2019)",
-      idioma: "Português",
-      quantidade: 5,
-    },
-    {
-      isbn: "0060763280",
-      nome_livro: "SECRETS MILLIONAIRE MIND",
-      editora: "HarperCollins e-books",
-      idioma: "Inglês",
-      quantidade: 100,
-    },
-    {
-      isbn: "978-8522112593",
-      nome_livro: "Cálculo - Volume 2",
-      editora: "Cengage; E  dição: 7ª",
-      idioma: "Português",
-      quantidade: 0,
-    },
-    {
-      isbn: "04-141-441",
-      nome_livro: "As Aventuras de Poliana",
-      editora: "Abril",
-      idioma: "Russo",
-      quantidade: 1,
-    },
-    {
-      isbn: "104-141-11x",
-      nome_livro: "Era uma vez na cadeia",
-      editora: "Abril",
-      idioma: "Alemão",
-      quantidade: 5,
-    },
-    {
-      isbn: "104-141-11y",
-      nome_livro: "Era uma vez na cadeia",
-      editora: "Abril",
-      idioma: "Alemão",
-      quantidade: 1,
-    },
-    {
-      isbn: "114-1414-x1",
-      nome_livro: "Luz Clarita e os duendes",
-      editora: "Senac",
-      idioma: "Português",
-      quantidade: 0,
-    },
-    {
-      isbn: "114-1414-44",
-      nome_livro: "Era uma vez na Escuridão",
-      editora: "Manir",
-      idioma: "Português",
-      quantidade: 0,
-    },
-    {
-      isbn: "TEST-001-004",
-      nome_livro: "Jorge Aragão",
-      editora: "Abril",
-      idioma: "Russo",
-      quantidade: 0,
-    },
-  ];
+  useEffect(() => {
+    async function loadISBN() {
+      const data = await api
+        .get("/isbn", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(function (response) {
+          setDataArray(response.data);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    }
+
+    loadISBN();
+  }, []);
 
   function verificaAcao(dataArray) {
     if (dataArray !== 0) {
@@ -109,11 +59,6 @@ const BookList = ({ navigation }) => {
             </Text>
           </View>
 
-          <View style={styles.items}>
-            <TouchableOpacity onPress={navigateToHome}>
-              <Text style={styles.textoBotao}>Emprestimo</Text>
-            </TouchableOpacity>
-          </View>
           <View style={styles.items}>
             <TouchableOpacity onPress={navigateToHome}>
               <Text style={styles.textoBotao}>Reserva</Text>
@@ -136,6 +81,10 @@ const BookList = ({ navigation }) => {
     navigation.navigate("Home");
   };
 
+  const navigateToScanEmprestimos = () => {
+    navigation.navigate("ScanEmprestimos");
+  };
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
 
@@ -147,6 +96,17 @@ const BookList = ({ navigation }) => {
       <TouchableOpacity onPress={navigateToHome}>
         <Feather name="chevron-left" size={50} color="#044C8C" />
       </TouchableOpacity>
+      <View>
+        <Text style={styles.titulo}>Empréstimo</Text>
+        <View style={styles.containerTitulo}>
+          <TouchableOpacity onPress={navigateToScanEmprestimos}>
+            <Ionicons name="md-qr-scanner" size={50} color="#044C8C" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={navigateToScanEmprestimos}>
+            <Text style={styles.textoOpcao}>Ler QR-Code</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
       <View style={styles.searchContainer}>
         <View style={styles.searchItem}>
           <TextInput

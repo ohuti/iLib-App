@@ -9,7 +9,6 @@ import styles from "./styles";
 import logo from "../../assets/logo.png";
 
 const Home = ({ navigation }) => {
-
   const dispatch = useDispatch();
 
   const navigateToBookList = () => {
@@ -19,24 +18,31 @@ const Home = ({ navigation }) => {
   const navigateToRoomList = () => {
     navigation.navigate("RoomList");
   };
-  
+
   const logout = () => {
     dispatch({
-      type:"SIGNOUT"
-    })
+      type: "SIGNOUT",
+    });
 
     navigation.navigate("Login");
   };
 
+  const nome = useSelector((state) => state.login.nome);
+
   return (
     <View style={styles.container}>
-      {/* <Text>Olá, {name}</Text> */}
-
       <TouchableOpacity style={styles.logout} onPress={logout}>
         <MaterialCommunityIcons name="power" size={50} color="#044C8C" />
       </TouchableOpacity>
 
       <Image source={logo} style={styles.logo} />
+
+    
+      <Text style={styles.welcomeText}>
+        {`Olá, `}
+        <Text style={styles.welcomeTextBold}>{`${nome}. `}</Text>
+        {`Opções:`}
+      </Text>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <TouchableOpacity style={styles.items} onPress={navigateToBookList}>

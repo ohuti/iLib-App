@@ -7,6 +7,28 @@ export default StyleSheet.create({
     paddingBottom: 100,
     borderStyle: "solid",
   },
+  titulo: {
+    textAlign: "center",
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#044C8C",
+  },
+  textoOpcao:{
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#044C8C",
+    paddingLeft: 15,
+
+  },
+  containerTitulo: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft: 15,
+    borderBottomColor:"#ccc",
+    borderBottomWidth:1,
+    borderStyle:"solid",
+    paddingBottom:20,    
+  },
   bookContainer: {
     borderWidth: 1,
     borderColor: "#FD5F00",
@@ -14,9 +36,6 @@ export default StyleSheet.create({
     paddingRight: 25,
     paddingTop: 15,
     paddingBottom: 15,
-
-
-
     margin: 6,
     borderRadius: 8,
   },
@@ -62,7 +81,9 @@ export default StyleSheet.create({
     color: "#044C8C",
   },
   searchContainer: {
+    paddingTop:15,
     flexDirection: "row",
+    paddingBottom:20,
   },
   searchItem: {
     borderWidth: 1,
