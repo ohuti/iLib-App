@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import BookList from "./pages/BookList";
 import RoomList from "./pages/RoomList";
 import ScanEmprestimos from "./pages/ScanEmprestimo";
+import MeusEmprestimos from "./pages/MeusEmprestimos";
 
 //const AppStack = createStackNavigator()
 
@@ -20,6 +21,7 @@ export default createAppContainer(
     BookList,
     RoomList,
     ScanEmprestimos,
+    MeusEmprestimos,
   })
 );
 

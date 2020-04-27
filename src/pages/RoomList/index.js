@@ -134,7 +134,6 @@ const RoomList = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Ionicons name="md-qr-scanner" size={50} color="#044C8C" />
       <TouchableOpacity onPress={navigateToHome}>
         <Feather name="chevron-left" size={50} color="#044C8C" />
       </TouchableOpacity>
